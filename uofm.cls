@@ -1,5 +1,12 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %                                                              %
+% THIS TEMPLATE IS TESTED WITH PDFLATEX INCLUDED IN TEXLIVE/   %
+% MACTEX 2023 DISTRIBUTION.                                    %
+%                                                              %
+% PLEASE SUGGEST ANY IMPROVEMENTS VIA yhlee@memphis.edu.       %
+%                                                              %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                                              %
 % LICENSES                                                     %
 %                                                              %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -66,6 +73,7 @@
 \newif\if@secnum
 \newif\if@nohyphen
 \newif\if@boundcopy
+\newif\if@boundcover
 \DeclareOption{10pt}{\renewcommand\@ptsize{0}}
 \DeclareOption{11pt}{\renewcommand\@ptsize{1}}
 \DeclareOption{12pt}{\renewcommand\@ptsize{2}}
@@ -81,13 +89,15 @@
 \DeclareOption{doctoral}{\@masterfalse}
 \DeclareOption{boundcopy}{\@boundcopytrue}
 \DeclareOption{pdfonly}{\@boundcopyfalse}
+\DeclareOption{boundcover}{\@boundcovertrue}
+\DeclareOption{noboundcover}{\@boundcoverfalse}
 
 % paper size
 \setlength{\paperheight}{11in}%
 \setlength{\paperwidth}{8.5in}%
 
 % default options
-\ExecuteOptions{12pt,final,master,nosecnum,nohyphenation,pdfonly}
+\ExecuteOptions{12pt,final,master,nosecnum,nohyphenation,pdfonly,boundcover}
 \ProcessOptions
 
 % packages and defs
@@ -169,9 +179,21 @@
         \setlength{\parindent}{0mm}%
         \begin{minipage}{6.5in}%
             \if@boundcopy\else
-                \hspace*{0.5in}%
+                \if@boundcover
+                    \hspace*{0.5in}%
+                \fi
             \fi
-            \begin{minipage}{6.0in}%
+            \begin{minipage}{%
+                \if@boundcopy
+                    6.0in%
+                \else
+                    \if@boundcover
+                        6.0in%
+                    \else
+                        6.5in%
+                    \fi
+                \fi     
+            }%
                 \begin{center}%
                     {\normalsize \MakeUppercase \@title \par}%
                     \vspace*{13.2pt}%
@@ -184,9 +206,21 @@
         \vfill
         \begin{minipage}{6.5in}%
             \if@boundcopy\else
-                \hspace*{0.5in}%
+                \if@boundcover
+                    \hspace*{0.5in}%
+                \fi
             \fi
-            \begin{minipage}{6.0in}%
+            \begin{minipage}{%
+                \if@boundcopy
+                    6.0in%
+                \else
+                    \if@boundcover
+                        6.0in%
+                    \else
+                        6.5in%
+                    \fi
+                \fi
+            }%
                 \begin{center}%
                     \if@master%
                         {\normalsize A Thesis \par}%
@@ -208,9 +242,21 @@
         \vfill
         \begin{minipage}{6.5in}%
             \if@boundcopy\else
-                \hspace*{0.5in}%
+                \if@boundcover
+                    \hspace*{0.5in}%
+                \fi
             \fi
-            \begin{minipage}{6.0in}%
+            \begin{minipage}{%
+                \if@boundcopy
+                    6.0in%
+                \else
+                    \if@boundcover
+                        6.0in%
+                    \else
+                        6.5in%
+                    \fi
+                \fi
+            }%
                 \begin{center}%
                     {\normalsize The University of Memphis \par}%
                     \vspace*{13.2pt}%

@@ -1,5 +1,12 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %                                                              %
+% THIS TEMPLATE IS TESTED WITH PDFLATEX INCLUDED IN TEXLIVE/   %
+% MACTEX 2023 DISTRIBUTION.                                    %
+%                                                              %
+% PLEASE SUGGEST ANY IMPROVEMENTS VIA yhlee@memphis.edu.       %
+%                                                              %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                                              %
 % LICENSES                                                     %
 %                                                              %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -87,8 +94,20 @@
 % Otherwise, pdfonly option is default that creates standard   %
 % 1.0-in left margin.                                          %
 %                                                              %
+% Cover page binding option: [boundcover], noboundcover        %
+% This option only works if binding option is set to pdfonly.  %
+% boundcover option is the default, giving 1.5-in left margin  %
+% and 1.0-in right margin for the cover page.                  %
+% noboundcover option will make both left and right margins    %
+% equally to 1.0-in margins, but this is not recommended due   %
+% to the reason stated below:                                  %
+% Warning: The UofM thesis and dissertation should have 1.5-in %
+% left margin and 1.0-in right margin, regardless of binding   %
+% option choices. Changing to noboundcover is not allowed for  %
+% submissions to the UofM thesis and dissertation deposit.     %
+%                                                              %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\documentclass[master,nosecnum,nohyphenation,pdfonly]{uofm}
+\documentclass[master,nosecnum,nohyphenation,pdfonly,boundcover]{uofm}
 
 \usepackage{notoccite} % Correct order of cites used in titles or figure captions with the number they should have in the main text.
 \usepackage{cite} % Make multiple cites short: in the form of [1--3] instead of [1, 2, 3].
@@ -99,9 +118,9 @@
 
 \title{Full Title of Thesis/Dissertation in All Uppercase Letters (Automatically Done) and No Bold, Same Font Size As Text, Long Titles Should Be Single Spaced}
 \author{Student Full Name}
-\degree{Master of Science}
+\degree{Master of Science} % or Doctor of Philosophy -- In this case you need to use the doctoral option in the documentclass.
 \major{Mechanical Engineering}
-\date{December 2023}
+\date{May 2024}
 
 \begin{document}
 \maketitle

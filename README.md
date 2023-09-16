@@ -6,3 +6,7 @@ This LaTeX template was developed to assist students in writing their thesis and
 
 Please note that while this template has been designed to assist students in writing their thesis or dissertation, it may not fully conform to the Thesis/Dissertation Guidelines provided on the Graduate School of the University of Memphis website. It is the responsibility of the individual author to carefully review and ensure that their document adheres to the formatting and style requirements outlined in the guidelines. The author of this template cannot guarantee full compliance with the guidelines.
 
+## Contributions in debugging and refining the template
+
+- E.J. Jeon (Technische Universitat Braunschweig) - Correction made in the order of references cited in section titles, figures, and tables, using notoccite package.
+

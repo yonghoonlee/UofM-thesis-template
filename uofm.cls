@@ -587,10 +587,11 @@
 \newcommand\listglossaries{%
     \if@proposal\else%
         \singlespacing%
+        \renewcommand*{\glsclearpage}{}%
         \printglossary[title=\glossaryname,style=index2,nogroupskip=true]%
         \doublespacing%
-    \fi
-}
+    \fi%
+}%
      
 \newenvironment{verse}
     {\let\\\@centercr

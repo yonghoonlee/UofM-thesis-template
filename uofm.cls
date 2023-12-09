@@ -66,10 +66,12 @@
 %                                                              %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \NeedsTeXFormat{LaTeX2e}[1995/12/01]
-\ProvidesClass{uofm}[2023/02/17 v0.1 Customized LaTeX document class]
+\ProvidesClass{uofm}[2023/12/08 v1.1 Customized LaTeX document class]
 \newcommand\@ptsize{}
 \newif\if@restonecol
 \newif\if@master
+\newif\if@proposal
+\newif\if@showabstract
 \newif\if@secnum
 \newif\if@nohyphen
 \newif\if@boundcopy
@@ -87,6 +89,10 @@
 \DeclareOption{fleqn}{\input{fleqn.clo}}
 \DeclareOption{master}{\@mastertrue}
 \DeclareOption{doctoral}{\@masterfalse}
+\DeclareOption{proposal}{\@proposaltrue}
+\DeclareOption{showabstract}{\@showabstracttrue}
+\DeclareOption{hideabstract}{\@showabstractfalse}
+\DeclareOption{fulldocument}{\@proposalfalse}
 \DeclareOption{boundcopy}{\@boundcopytrue}
 \DeclareOption{pdfonly}{\@boundcopyfalse}
 \DeclareOption{boundcover}{\@boundcovertrue}
@@ -97,7 +103,7 @@
 \setlength{\paperwidth}{8.5in}%
 
 % default options
-\ExecuteOptions{12pt,final,master,nosecnum,nohyphenation,pdfonly,boundcover}
+\ExecuteOptions{12pt,final,master,fulldocument,hideabstract,nosecnum,nohyphenation,pdfonly,boundcover}
 \ProcessOptions
 
 % packages and defs
@@ -108,8 +114,10 @@
 \setlength\parindent{0.5in}
 \RequirePackage{ragged2e}
 \setlength{\RaggedRightParindent}{\parindent}
+\RequirePackage{ifthen}
 \def\degree#1{\def\@degree{#1}}
 \def\major#1{\def\@major{#1}}
+\def\advisor#1{\def\@advisor{#1}}
 
 % page layout
 \if@boundcopy % Left margin 1.5 inch
@@ -223,19 +231,37 @@
             }%
                 \begin{center}%
                     \if@master%
-                        {\normalsize A Thesis \par}%
+                        \if@proposal%
+                            {\normalsize A Thesis Proposal \par}%
+                        \else%
+                            {\normalsize A Thesis \par}%
+                        \fi
                         \vspace*{13.2pt}%
                     \else%
-                        {\normalsize A Dissertation \par}%
+                        \if@proposal%
+                            {\normalsize A Dissertation Proposal \par}%
+                        \else%
+                            {\normalsize A Dissertation \par}%
+                        \fi
                         \vspace*{13.2pt}%
                     \fi%
-                    {\normalsize Submitted in Partial Fulfillment of the \par}%
-                    \vspace*{13.2pt}%
-                    {\normalsize Requirements for the Degree of \par}%
-                    \vspace*{13.2pt}%
-                    {\normalsize \@degree \par}%
-                    \vspace*{0.5in}%
-                    {\normalsize Major: \@major \par}%
+                    \if@proposal%
+                        {\normalsize Submitted for the Committee's Review \par}%
+                        \vspace*{0.5in}%
+                        {\normalsize Academic Advisor: \par}%
+                        \vspace*{13.2pt}%
+                        {\normalsize \@advisor \par}%
+                        \vspace*{0.5in}%
+                        {\normalsize Major: \@major \par}%
+                    \else%
+                        {\normalsize Submitted in Partial Fulfillment of the \par}%
+                        \vspace*{13.2pt}%
+                        {\normalsize Requirements for the Degree of \par}%
+                        \vspace*{13.2pt}%
+                        {\normalsize \@degree \par}%
+                        \vspace*{0.5in}%
+                        {\normalsize Major: \@major \par}%
+                    \fi
                 \end{center}%
             \end{minipage}\par%
         \end{minipage}\par
@@ -436,46 +462,90 @@
                                  \normalfont\bfseries #1}
 
 \newcommand\copyrightpage{%
-    \prelimpage
-        \singlespacing
-        \topskip0pt
-        \vspace*{\fill}
-        \begin{center}{\normalsize%
-            Copyright\copyright~\@author \par
-            All rights reserved}
-        \end{center}
-        \vspace*{\fill}
-        \doublespacing
-    \endprelimpage
+    \if@proposal\else%
+        \prelimpage
+            \singlespacing
+            \topskip0pt
+            \vspace*{\fill}
+            \begin{center}{\normalsize%
+                Copyright\copyright~\@author \par
+                All rights reserved}
+            \end{center}
+            \vspace*{\fill}
+            \doublespacing
+        \endprelimpage
+    \fi
 }
 
 \newenvironment{dedication}{%
-    \prelimpage
-    \@makeschapterhead{\dedicationname}\par
-    \doublespacing%
+    \if@proposal%
+        \setbox\z@\vbox\bgroup
+    \else
+        \prelimpage
+        \@makeschapterhead{\dedicationname}\par
+        \doublespacing%
+    \fi%
 }{%
-    \endprelimpage}
+    \if@proposal%
+        \egroup
+    \else%
+    \endprelimpage
+    \fi}
 
 \newenvironment{acknowledgments}{%
-    \prelimpage
-    \@makeschapterhead{\acknowledgmentsname}\par
-    \doublespacing%
+    \if@proposal%
+        \setbox\z@\vbox\bgroup
+    \else
+        \prelimpage
+        \@makeschapterhead{\acknowledgmentsname}\par
+        \doublespacing%
+    \fi%
 }{%
-    \endprelimpage}
+    \if@proposal%
+        \egroup
+    \else
+        \endprelimpage
+    \fi}
 
 \newenvironment{preface}{%
-    \prelimpage
-    \@makeschapterhead{\prefacename}\par
-    \doublespacing%
+    \if@proposal%
+        \setbox\z@\vbox\bgroup
+    \else
+        \prelimpage
+        \@makeschapterhead{\prefacename}\par
+        \doublespacing%
+    \fi
 }{%
-    \endprelimpage}
+    \if@proposal%
+        \egroup
+    \else
+        \endprelimpage
+    \fi}
 
 \newenvironment{abstract}{%
-    \prelimpage
-    \@makeschapterhead{\abstractname}\par
-    \doublespacing%
+    \if@proposal%
+        \if@showabstract%
+            \prelimpage
+            \@makeschapterhead{\abstractname}\par
+            \doublespacing%
+        \else
+            \setbox\z@\vbox\bgroup
+        \fi%
+    \else
+        \prelimpage
+        \@makeschapterhead{\abstractname}\par
+        \doublespacing%
+    \fi
 }{%
-    \endprelimpage}
+    \if@proposal%
+        \if@showabstract%
+            \endprelimpage
+        \else
+            \egroup
+        \fi%
+    \else
+        \endprelimpage
+    \fi}
 
 \newenvironment{keywords}{%
     \par
@@ -483,12 +553,14 @@
     {\bfseries\normalsize\noindent Keywords:~}}{}%
 
 \newcommand\listsymbols[1]{%
-    \prelimpage%
-    \singlespacing%
     \input{#1}%
-    \renewcommand*{\glossarypreamble}{\vspace{0.3\baselineskip}}%
-    \printglossary[type=symbols,title={\symbolname},style=index2,nogroupskip=true]
-    \endprelimpage%
+    \if@proposal\else%
+        \prelimpage%
+        \singlespacing%
+        \renewcommand*{\glossarypreamble}{\vspace{0.3\baselineskip}}%
+        \printglossary[type=symbols,title={\symbolname},style=index2,nogroupskip=true]
+        \endprelimpage%
+    \fi
 }
 
 \newcommand\newsymb[3]{%
@@ -496,13 +568,15 @@
 }
 
 \newcommand\listabbreviations[1]{%
-    \prelimpage
-    \singlespacing%
     \input{#1}%
-    \renewcommand*{\glossarypreamble}{\vspace{0.3\baselineskip}}%
-    \printglossary[type=\acronymtype,title={\acronymname},style=index2,nogroupskip=true]%
-    \doublespacing%
-    \endprelimpage%
+    \if@proposal\else%
+        \prelimpage
+        \singlespacing%
+        \renewcommand*{\glossarypreamble}{\vspace{0.3\baselineskip}}%
+        \printglossary[type=\acronymtype,title={\acronymname},style=index2,nogroupskip=true]%
+        \doublespacing%
+        \endprelimpage%
+    \fi
 }
 
 \newcommand\useglossaries[1]{\input{#1}}
@@ -511,9 +585,11 @@
     \newglossaryentry{#1}{name=#2,description={#3}}}
 
 \newcommand\listglossaries{%
-    \singlespacing%
-    \printglossary[title=\glossaryname,style=index2,nogroupskip=true]%
-    \doublespacing%
+    \if@proposal\else%
+        \singlespacing%
+        \printglossary[title=\glossaryname,style=index2,nogroupskip=true]%
+        \doublespacing%
+    \fi
 }
      
 \newenvironment{verse}
@@ -641,16 +717,18 @@
 \newcommand\@dotsep{3}
 \setcounter{tocdepth}{2}
 \newcommand\tableofcontents{%
-    \prelimpage%
-    \begin{center}%
-        \bfseries \contentsname
-    \end{center}%
-    \singlespacing
-    \vspace*{-0.06in}%
-    Chapter \hfill Page \par%
-    \@starttoc{toc}%
-    \doublespacing
-    \endprelimpage
+    \if@proposal\else%
+        \prelimpage%
+        \begin{center}%
+            \bfseries \contentsname
+        \end{center}%
+        \singlespacing
+        \vspace*{-0.06in}%
+        Chapter \hfill Page \par%
+        \@starttoc{toc}%
+        \doublespacing
+        \endprelimpage
+    \fi
     }
 \newcommand*\l@part[2]{%
   \ifnum \c@tocdepth >-2\relax
@@ -692,33 +770,37 @@
 \newcommand*\l@paragraph{\@dottedtocline{4}{9.4em}{5em}}
 \newcommand*\l@subparagraph{\@dottedtocline{5}{11.7em}{6em}}
 \newcommand\listoffigures{%
-    \prelimpage%
-    \addcontentsline{toc}{chapter}{\listfigurename}
-    \begin{center}%
-        \bfseries \listfigurename
-    \end{center}%
-    \figurename \hfill Page \par
-    \singlespacing
-    \@mkboth{\MakeUppercase\listfigurename}%
-            {\MakeUppercase\listfigurename}%
-    \@starttoc{lof}%
-    \doublespacing
-    \endprelimpage
+    \if@proposal\else%
+        \prelimpage%
+        \addcontentsline{toc}{chapter}{\listfigurename}
+        \begin{center}%
+            \bfseries \listfigurename
+        \end{center}%
+        \figurename \hfill Page \par
+        \singlespacing
+        \@mkboth{\MakeUppercase\listfigurename}%
+                {\MakeUppercase\listfigurename}%
+        \@starttoc{lof}%
+        \doublespacing
+        \endprelimpage
+    \fi
     }
 \newcommand*\l@figure{\@dottedtocline{1}{0em}{2.3em}}
 \newcommand\listoftables{%
-    \prelimpage%
-    \addcontentsline{toc}{chapter}{\listtablename}
-    \begin{center}%
-        \bfseries \listtablename
-    \end{center}%
-    \tablename \hfill Page \par
-    \singlespacing
-    \@mkboth{\MakeUppercase\listtablename}%
-            {\MakeUppercase\listtablename}%
-    \@starttoc{lot}%
-    \doublespacing
-    \endprelimpage
+    \if@proposal\else%
+        \prelimpage%
+        \addcontentsline{toc}{chapter}{\listtablename}
+        \begin{center}%
+            \bfseries \listtablename
+        \end{center}%
+        \tablename \hfill Page \par
+        \singlespacing
+        \@mkboth{\MakeUppercase\listtablename}%
+                {\MakeUppercase\listtablename}%
+        \@starttoc{lot}%
+        \doublespacing
+        \endprelimpage
+    \fi
     }
 \let\l@table\l@figure
 \newdimen\bibindent

@@ -72,6 +72,23 @@
 %                                                              %
 % Title page options: [master], doctoral.                      %
 %                                                              %
+% Document options: proposal, [fulldocument].                  %
+% Proposal option will change title page and hide various      %
+% elements of the document, including copyright notice,        %
+% dedication, acknowledgments, prepace, table of contents,     %
+% list of tables, list of figures, list of abbreviations,      %
+% list of glossaries, etc.                                     %
+% Proposal option works differently on the title page along    %
+% with master/doctoral options, showing either                 %
+% "A Thesis Proposal" or "A Dissertation Proposal."            %
+%                                                              %
+% Abstract page options: showabstract, [hideabstract].         %
+% This options works only along with proposal option.          %
+% If you want to show abstract page on your proposal document  %
+% you can utilize this optional feature.                       %
+% Full thesis/dissertation document with fulldocument option   %
+% always shows abstract page.                                  %
+%                                                              %
 % Font size: 10pt, 11pt, [12pt].                               %
 % Smaller than 12pt is not recommended.                        %
 %                                                              %
@@ -107,7 +124,8 @@
 % submissions to the UofM thesis and dissertation deposit.     %
 %                                                              %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\documentclass[master,nosecnum,nohyphenation,pdfonly,boundcover]{uofm}
+\documentclass[master,fulldocument,hideabstract,nosecnum,nohyphenation,pdfonly,boundcover]{uofm}
+% Please note that showabstract/hideabstract options will only work along with proposal option. fulldocument option will always show abstract.
 
 \usepackage{notoccite} % Correct order of cites used in titles or figure captions with the number they should have in the main text.
 \usepackage{cite} % Make multiple cites short: in the form of [1--3] instead of [1, 2, 3].
@@ -120,6 +138,7 @@
 \author{Student Full Name}
 \degree{Master of Science} % or Doctor of Philosophy -- In this case you need to use the doctoral option in the documentclass.
 \major{Mechanical Engineering}
+\advisor{Dr. Name Of Your Advisor}
 \date{May 2024}
 
 \begin{document}
